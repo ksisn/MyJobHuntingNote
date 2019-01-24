@@ -1,4 +1,4 @@
-# first  
+# MyJobHuntingNote  
 
 ## 概要
 「就活生向けの活動管理サイト」  
