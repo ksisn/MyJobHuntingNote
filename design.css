@@ -1,0 +1,639 @@
+@charset "utf-8"
+
+	body{
+		text-align: -webkit-center;
+	}
+
+	/* My Job Hunting Note */
+	div.sitename{
+		font:600 16px/18px 'Open Sans',sans-serif;
+		font-size: 3em;
+		color: #235180;
+	}
+
+	/* 日付（event.php） */
+	div.top{
+		font-size: 250%;
+		font-weight: bold;
+		color: #FF9800;/*文字色*/
+	}
+
+	/* メニューバー（schedule.php） */
+	nav ul{
+		display: table;
+		margin: 0 auto;
+		padding: 0 ;
+		width: 80%;
+		text-align: center;
+	}
+	nav li{
+		display: table-cell;
+		min-width: 50px;
+	}
+	nav a{
+		display: block;
+		width: 100%;
+		text-decoration: none;
+		color: #555;
+		padding-bottom: 5px;
+	}
+	nav li.current{
+		border-bottom: 3px solid #FF9800;
+	}
+	nav li:hover{
+		color: #E7DA66;
+		border-bottom: 3px solid #FFDBB2;
+	}
+
+	/* Activity */
+	#wrap {
+		overflow:auto;
+	}
+	#main {
+		overflow:auto;
+		width: 49%;
+		height: 1000px;
+		float: left;
+		margin: 0 0 100px 15%;
+		padding: 0;
+		border: 1px solid #F0F8FF;
+	}
+	#sidebar {
+		width: 20%;
+		float: right;
+		margin: 0 15% 0 0;
+		padding: 0;
+		background-color: #F0F8FF;
+	}
+	#content {
+		padding: 20px 20px 20px 20px;
+	}
+
+	.head {
+		position: relative;
+		padding: 0.6em;
+		background: #e0edff;
+	}
+	.head:after {
+		position: absolute;
+		content: '';
+		top: 100%;
+		left: 30px;
+		border: 15px solid transparent;
+		border-top: 15px solid #e0edff;
+		width: 0;
+		height: 0;
+	}
+	.sub { color: #FFDBB2; }
+	.cg { color: #778899; }
+	.body {
+		color: black;
+		max-width: 500px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.title {
+		padding: 0.25em 0.5em;/*上下 左右の余白*/
+		color: #494949;/*文字色*/
+		background: transparent;/*背景透明に*/
+		border-left: solid 5px #7db4e6;/*左線*/
+	}
+	.text {
+		max-width: 600px;
+		word-wrap: break-word;
+	}
+
+
+	/* 企業情報表 */
+	table.company{
+		border-collapse: collapse;
+		width: 80%;
+	}
+	table.company th, table.company td {
+		border: solid 1px black;
+	}
+	table.company th{
+		background-color: #DFEFED;
+	}
+	table.company th.mini{
+		background-color: #9DA5A0;
+		color: #fff;
+		font-size: small;
+	}
+	table.company th.header{
+		background-color: #333333;
+		color: #fff;
+	}
+
+	table.company .vertical{
+		writing-mode: tb-rl; /* IE用 */
+		writing-mode: vertical-rl; /* Chrome、Firefox用 */
+		margin: 0 auto;
+		white-space: nowrap;
+		width: 1em; /* firefox対策 */
+		line-height: 1em; /* firefox対策 */
+		text-orientation: upright;
+	}
+
+	/* 企業情報表の中のフォーム（conote.php） */
+	table.company .nonborder{
+		border: none;
+		width: 100%;
+		height: 100%;
+		font-size: medium;
+	}
+	table.company textarea.nonborder{
+		resize: vertical;
+	}
+
+
+	/* 履歴書 */
+	table.resume{
+		border-collapse: collapse;
+		width: 70%;
+	}
+	table.resume th, table.resume td {
+		border: solid 1px black;
+	}
+	table.resume th {
+		background-color: #CFD7DF;
+	}
+	table.resume .h_mini{
+		font-size: x-small;
+		height: auto;
+	}
+	table.resume .d_mini{ font-size: x-small; }
+	table.resume .mini{
+		border: none;
+		font-size: x-small;
+		width: 100%;
+	}
+	table.resume .h_medium{
+		font-size: medium;
+		height: auto;
+	}
+	table.resume .d_medium{ font-size: medium; }
+	table.resume .medium{
+		border: none;
+		font-size: medium;
+		width: 100%;
+	}
+	table.resume .h_big{
+		font-size: large;
+		height: 100px;
+	}
+	table.resume .d_big{ font-size: xx-large; }
+	table.resume .big{
+		border: none;
+		font-size: xx-large;
+		width: 100%;
+	}
+
+	table.resume .photo{
+		border: none;
+		text-align: center;
+		vertical-align: middle;
+	}
+
+	/* 履歴書中のテキストエリア */
+	table.resume textarea{
+		resize: vertical;
+	}
+
+
+	/* ユーザー情報（config.php） */
+	table.info {
+		width: 600px;
+		margin: 0 auto;
+		border-collapse: separate;
+		border-spacing: 0px 15px;
+		font-size: 12px;
+	}
+	table.info th,
+	table.info td {
+		padding: 20px 10px;
+	}
+	table.info th {
+		background: #235180;
+		vertical-align: middle;
+		text-align: center;
+		width: 150px;
+		overflow: visible;
+		position: relative;
+		color: #fff;
+		font-weight: normal;
+		font-size: 15px;
+	}
+	table.info th:after {
+		left: 100%;
+		top: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+		border-color: rgba(136, 183, 213, 0);
+		border-left-color: #235180;
+		border-width: 10px;
+		margin-top: -10px;
+	}
+	/* FF用 */
+	@-moz-document url-prefix() {
+		table.info th::after {
+			float: right;
+			padding: 0;
+			left: 30px;
+			top: 10px;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: relative;
+			pointer-events: none;
+			border: 10px solid transparent;
+			border-left: #235180 10px solid;
+			margin-top: -10px;
+		}
+	}
+	table.info td {
+		background: #f8f8f8;
+		width: 410px;
+		padding-left: 20px;
+		font-weight: bold;
+	}
+
+	/* ユーザ情報変更フォーム */
+	table.change td{
+		border: none;
+		border-collapse: collapse;
+		text-align: center;
+		padding: 10px;
+		width: 600px;
+	}
+	table.change .form {
+		width: 400px;
+	}
+
+	/* カレンダー（schedule.php） */
+	table.calendar {
+		text-align: center;
+		border-collapse: collapse;
+		width: 84%;
+	}
+	tr.week {
+		height: 15px;
+		font-weight: bold;
+	}
+	th.cal_th {
+		color: #FF9800;/*文字色*/
+		font-size: 200%;
+		height: 50px;
+		font-weight: bold;
+	}
+	td #week, td.today, td.normal, td.sun, td.sat{
+		word-wrap: break-word;
+		border-style: none;
+		width: 12%;
+	}
+	#week{ border-style: none; }
+	td.today { background-color: #FFDBB2; }
+	td.sun { color: #FF0000; }
+	td.sat { color: #0000FF; }
+	td.today, td.normal { padding: 5px; }
+
+	/* カレンダーの矢印ボタン（schedule.php） */
+	.arrow_btn {
+		display: inline-block;
+		padding: 0.3em;
+		width: 70%;
+		color: #FF9800;
+		border: solid 2px #FF9800;
+		border-radius: 3px;
+		transition: .4s;
+	}
+	.arrow_btn:hover {
+		background: #FF9800;
+		color: white;
+	}
+
+
+	/* カレンダーの日付リンク（schedule.php） */
+	#daylink{
+	  display: inline-block;
+	  text-decoration: none;
+		font-size: small;
+	  width: 35px;
+	  height: 35px;
+	  line-height: 35px;
+	  border-radius: 50%;
+	  border: solid 1px;
+	  text-align: center;
+	  vertical-align: middle;
+	  overflow: hidden;
+	  font-weight: bold;
+	  transition: .4s;
+		background-color: #fff;
+	}
+	.sun #daylink { color: #FF0000; }
+	.sun #daylink:hover { background: #FFE5E5; }
+	.sat #daylink { color: #0000FF; }
+	.sat #daylink:hover { background: #E5E5FF; }
+	.normal #daylink { color: #235180; }
+	.normal #daylink:hover { background: #EDEFF1; }
+	.today #daylink { color: #235180; }
+	.today #daylink:hover { background: #EDEFF1; }
+
+	/* カレンダーの予定ラベル（schedule.php） */
+	#event {
+			padding: 0.5px 10px;
+			width: 100%;
+			max-width: 130px;
+			font-weight: bold;
+			font-size: 0.7em;
+			color: #FFFFFF;
+			border-radius: 10px;/*角の丸み*/
+			border: 1px #000;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+	}
+
+	/* 予定ラベル（event.php） */
+	a.pink, a.blue, a.green, a.purple, a.orange, a.gray {
+			padding: 0.2em 1em;
+			margin: 1em;
+			width: 5em;
+			height: 1.4em;
+			font-weight: bold;
+			font-size: small;
+			display:inline;
+			color: #FFFFFF;
+			border-radius: 10px;
+	}
+	.pink{ background: #E38089; }
+	.blue{ background: #87CEEB; }
+	.green{ background: #32CD32; }
+	.purple{ background: #7445AA; }
+	.orange{ background: #F79800; }
+	.gray{ background: #767676; }
+
+
+	/* 表示非表示切り替え用（schedule.php, event.php） */
+	.hidden_box {
+		margin: 2em 0;/*前後の余白*/
+		padding: 0;
+	}
+	.hidden_box label {
+		font-weight: bold;
+		cursor :pointer;
+	}
+	.hidden_box label:hover {
+		border-bottom: 2px solid #000;
+	}
+	.none {
+		display: none;
+	}
+	.hidden_box .hidden_show {
+		height: 0;
+		padding: 0;
+		overflow: hidden;
+		opacity: 0;
+		transition: 0.8s;
+	}
+	.hidden_box input:checked ~ .hidden_show {
+		padding: 10px 0;
+		height: auto;
+		opacity: 1;
+	}
+
+	/* [] */
+	.bracket{
+		display: inline-block;
+		position: relative;
+		padding: 0.5em 1em;
+		text-decoration: none;
+		color: #000;
+		transition: .4s;
+	}
+	.bracket:hover {
+		color:#ff7f7f;
+		text-decoration: none;
+	}
+	.bracket:before, .bracket:after{
+		position: absolute;
+		top: 0;
+		content:'';
+		width: 8px;
+		height: 100%;
+		display: inline-block;
+	}
+	.bracket:before{
+		border-left: solid 1px #ff7f7f;
+		border-top: solid 1px #ff7f7f;
+		border-bottom: solid 1px #ff7f7f;
+		left: 0;
+	}
+	.bracket:after{
+		content: '';
+		border-top: solid 1px #ff7f7f;
+		border-right: solid 1px #ff7f7f;
+		border-bottom: solid 1px #ff7f7f;
+		right: 0;
+	}
+
+	/* 短い下線 */
+	h1.miniunder{
+		position: relative;
+		display: inline-block;
+		margin-bottom: 1em;
+	}
+	h1.miniunder:before {
+		content: '';
+		position: absolute;
+		bottom: -15px;
+		display: inline-block;
+		width: 60px;
+		height: 5px;
+		left: 50%;
+		-moz-transform: translateX(-50%);
+		-webkit-transform: translateX(-50%);
+		-ms-transform: translateX(-50%);
+		transform: translateX(-50%);
+		background-color: black;
+		border-radius: 2px;
+	}
+
+	/* （event.php） */
+	h1.circle {
+		position: relative;
+		color: #333333;
+		display: inline-block;
+		margin: 47px 0;
+		text-shadow: 0 0 2px white;
+	}
+	h1.circle:before {
+		content: "";
+		position: absolute;
+		background: #ffd69d;
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		top: 50%;
+		left: 50%;
+		-moz-transform: translate(-50%,-50%);
+		-webkit-transform: translate(-50%,-50%);
+		-ms-transform: translate(-50%,-50%);
+		transform: translate(-50%,-50%);
+		z-index: -1;
+	}
+
+	h1.com_circle {
+		position: relative;
+		color: #333333;
+		display: inline-block;
+		margin: 47px 0;
+		text-shadow: 0 0 2px white;
+	}
+	h1.com_circle:before {
+		content: "";
+		position: absolute;
+		background: #BFE9DB;
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		top: 50%;
+		left: 50%;
+		-moz-transform: translate(-50%,-50%);
+		-webkit-transform: translate(-50%,-50%);
+		-ms-transform: translate(-50%,-50%);
+		transform: translate(-50%,-50%);
+		z-index: -1;
+	}
+
+	/* 企業名付箋ボタン（conote.php） */
+	h3.husen{
+		width: 70%;
+		text-align: left;
+		display: inline-block;
+		padding: 0.5em 1em;
+		text-decoration: none;
+		background: #f7f7f7;
+		border-left: solid 6px #60CAAD;
+		color: #60CAAD;
+		font-weight: bold;
+		box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+	}
+	h3.husen:active {
+		box-shadow: inset 0 0 2px rgba(128, 128, 128, 0.1);
+		transform: translateY(2px);
+	}
+
+	/* （event.php） */
+	h3.sideline {
+		position: relative;
+		display: inline-block;
+		padding: 0 55px;
+	}
+	h3.sideline:before, h3.sideline:after{
+		content: '';
+		position: absolute;
+		top: 50%;
+		display: inline-block;
+		width: 45px;
+		height: 1px;
+		background-color: black;
+	}
+	h3.sideline:before { left: 0; }
+	h3.sideline:after { right: 0; }
+
+
+	/* 入力フォーム（event.php, editevent.php） */
+	.form, .txtbox {
+		color: #000;
+		border: 1px #235180 solid;
+		border-radius: 20px;
+		padding: 1em;
+	}
+	.form{ padding: 1em; }
+	.txtbox{
+		padding: 0.2em 1em;
+		width: 400px;
+	}
+
+	/* 変更 ボタン（config.php） */
+	.sideborder{
+		position: relative;
+		display: inline-block;
+		font-weight: bold;
+		padding: 0.5em 1em;
+		text-decoration: none;
+		border-left: solid 4px #FF9800;
+		border-right: solid 4px #FF9800;
+		color: #FF9800;
+		background: #fff;
+		transition: .4s;
+	}
+	.sideborder:hover {
+		background: #FF9800;
+		color: #FFF;
+	}
+
+	/* 確定 ボタン（changemlpw.php） */
+	.ellipse {
+		width: 400px;
+		height: 80%;
+		border: none;
+		padding:15px 20px;
+		border-radius:25px;
+		font-weight: bold;
+		color:#fff;
+		background:#235180;
+	}
+
+	/* 追加, 削除, 編集 ボタン（schedule.php, event.php, editevent.php） */
+	.inline{ display: inline; }
+	.btn{
+		font-size: small;
+		font-weight: bold;
+		display: inline-block;
+		padding: 0.3em 1em;
+		text-decoration: none;
+		background: #235180;
+		color: #FFF;
+		border-bottom: solid 4px #627295;
+		border-radius: 3px;
+	}
+	.btn:active {
+		-ms-transform: translateY(4px);
+		-webkit-transform: translateY(4px);
+		transform: translateY(4px);
+		border-bottom: none;
+	}
+
+	/* BACK, HOME ボタン（event.php, editevent.php） */
+	form.red .line_btn{ color: red; }
+	form.red .line_btn:before{ background: red; }
+	form.black .line_btn{ color: #000; }
+	form.black .line_btn:before{ background: #000; }
+	.line_btn{
+		position: relative;
+		display: inline-block;
+		font-weight: bold;
+		padding: 0.25em 0;
+		text-decoration: none;
+	}
+	.line_btn:before{
+		position: absolute;
+		content: '';
+		width: 100%;
+		height: 4px;
+		top:100%;
+		left: 0;
+		border-radius: 3px;
+		transition: .2s;
+	}
+	.line_btn:hover:before {
+		top: -webkit-calc(100% - 3px);
+		top: calc(100% - 3px);
+	}
