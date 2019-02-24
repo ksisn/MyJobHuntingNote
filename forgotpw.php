@@ -16,7 +16,7 @@
 	$password = 'パスワード';
 	$pdo = new PDO($dsn, $user, $password);
 
-	// エラーメッセージ用配列 確保
+	// エラーメッセージ用配列
 	$error = array();
 	$error2 = array();
 
@@ -25,6 +25,7 @@
 				$name = $_POST['username'];
 				$mail = $_POST['mail'];
 
+				// $check: エラー検知用（$check=0:エラーなし）
 				$check = 0;
 				if (empty($name)) { $error['name'] = "PleaseInput!"; $check++; }
 				if (empty($mail)) { $error['mail'] = "PleaseInput!"; $check++; }

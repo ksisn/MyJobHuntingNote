@@ -12,13 +12,14 @@
 	$username = $_SESSION['username'];
 	$usermail = $_SESSION['mail'];
 	if (empty($usermail)) {
+		// サインインしていない場合
 		exit("<center>Please sign in → <a href='login.php'>SIGN IN page</a></center>");
 	}
 	?>
 	<div align="center"><?php echo $username."'s page"; ?></div>
 	<hr>
 	<?php
-	/* DB接続 */
+	// DB接続
 	$dsn = 'mysql:dbname=データベース名;host=localhost';
 	$user = 'ユーザ名';
 	$password = 'パスワード';

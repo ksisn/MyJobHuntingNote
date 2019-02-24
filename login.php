@@ -16,7 +16,7 @@
 	$user = 'ユーザ名';
 	$password = 'パスワード';
 	$pdo = new PDO($dsn, $user, $password);
-	// DB 作成
+	// make TABLE（tmp_users: 仮ユーザ情報）
 	$sql = "CREATE TABLE if not exists tmp_users"
 					. "("
 					. "tmp_mail TEXT,"
@@ -24,12 +24,13 @@
 					. ");";
 	$stmt = $pdo -> query($sql);
 
-	// エラーメッセージ用配列 確保
+	// エラーメッセージ用配列
 	$error = array();
 	$error2 = array();
-	// 現在の表示を管理するための変数 $checked
+	// $checked: 現在の表示（SIGN IN / SIGN UP）を管理するための変数
 	if (empty($checked)) { $checked = 0; }
 
+	// sign in / send mail
 	switch($_POST['action']) {
 		case 'sign in':
 				$checked = 0;
@@ -37,6 +38,7 @@
 				$mail = $_POST['mail'];
 				$pass = $_POST['pass'];
 
+				// $check: エラー検知用（$check=0:エラーなし）
 				$check = 0;
 				if (empty($name)) { $error['name'] = "PleaseInput!"; $check++; }
 				if (empty($mail)) { $error['mail'] = "PleaseInput!"; $check++; }
@@ -55,6 +57,7 @@
 					} else if ($pass != $result['pass']) {
 						$error2[0] = "Wrong password.<br>";
 					} else {
+						/* ログイン */
 						session_regenerate_id(true);
 						$_SESSION['username'] = $name;
 						$_SESSION['mail'] = $mail;
@@ -175,27 +178,5 @@ EOM;
 		</div>
 		</div>
 	</form>
-
-	<hr>
-	<div align="center">
-		<?php
-		$sql = $pdo -> prepare("SELECT * FROM users");
-		$sql -> execute();
-		$results = $sql->fetchAll();
-		foreach ($results as $row) {
-			echo $row['name'].'<br>';
-			echo $row['mail'].'<br>';
-			echo $row['pass'].'<br><br>';
-		}
-		echo '<hr>';
-		$sql = $pdo -> prepare("SELECT * FROM tmp_users");
-		$sql -> execute();
-		$results = $sql->fetchAll();
-		foreach ($results as $row) {
-			echo $row['tmp_mail'].'<br>';
-			echo $row['pass'].'<br><br>';
-		}
-		?>
-	</div>
 </body>
 </html>

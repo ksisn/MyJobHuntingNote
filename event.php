@@ -12,28 +12,20 @@
 	$username = $_SESSION['username'];
 	$usermail = $_SESSION['mail'];
 	if (empty($usermail)) {
+		// サインインしていない場合
 		exit("<center>Please sign in → <a href='login.php'>SIGN IN page</a></center>");
 	}
 	?>
 	<div align="center"><?php echo $username."'s page"; ?></div>
 	<hr>
-	<?php /* DB 前処理 */
+	<?php
 	// DB接続
 	$dsn = 'mysql:dbname=データベース名;host=localhost';
 	$user = 'ユーザ名';
 	$password = 'パスワード';
 	$pdo = new PDO($dsn, $user, $password);
 
-	/* テーブル削除
-	$stmt = $pdo->prepare('show tables from データベース名 like :tblname');
-	$stmt -> execute(array(':tblname' => events));
-	if ($stmt->rowCount() > 0) {
-		$query = "drop table if exists ".events;
-		$pdo -> exec($query);
-	}
-	/**/
-
-	// DB 作成
+	// make TABLE（events: ユーザ別スケジュール情報）
 	$sql = "CREATE TABLE if not exists events"
 					. "("
 					. "usermail TEXT,"
@@ -47,11 +39,12 @@
 	?>
 
 	<center>
-	<?php /* 送信ボタンによって処理分岐（追加・削除） */
+	<?php
 	echo '<div class="top"><u>'.$mydate.'</u></div>';
 
 	$checked = 0;
 	switch($_POST['action']) {
+		/* 追加 */
 		case 'add':
 				if (empty($_POST['title'])) {
 					$error = "<br>error!<br>Please enter any event title.<br>";
@@ -61,20 +54,18 @@
 					$title = $_POST['title'];
 					$detail = $_POST['detail'];
 					$color = $_POST['color'];
-
+					// id 確保
 					$sql = $pdo -> prepare("SELECT COUNT(*) FROM events");
 					$sql -> execute();
 					$id = $sql->fetchColumn() + 1;
 
+					/* 追加処理 */
 					try {
 						$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 						$pdo->beginTransaction();
 
-						// DB にデータを入れるSQL文
 						$sql = $pdo -> prepare("INSERT INTO events (usermail, id, mydate,title,detail,color) VALUES (:usermail, :id, :mydate, :title, :detail, :color)");
-						// パラメータ指定
 						$params = array(':usermail'=>$usermail, ':id'=>$id, ':mydate'=>$mydate, ':title'=>$title, ':detail'=>$detail, ':color'=>$color);
-						// SQL 実行
 						$sql -> execute($params);
 
 						$pdo->commit();
@@ -84,13 +75,14 @@
 					}
 				}
 				break;
+		/* 削除 */
 		case 'delete':
 				// 削除対象番号 確保
 				$delid = $_POST['delid'];
 
 				// ずらし用変数 確保
 				$check = 0;
-				// DBの全データ確保
+				// events の全データ確保
 				$sql = 'SELECT * FROM events ORDER BY id';
 				$results = $pdo -> query($sql);
 				/* 処理 */
@@ -132,11 +124,16 @@
 	if (empty($results)) {
 		$e_print .= "予定なし<br>";
 	} else {
+		/* 指定日の全予定表示 */
 		foreach ($results as $row) {
+			// 入力された detail 改行反映
 			$text = str_replace("\r\n", "<br />", $row['detail']);
+			// title 表示
 			$e_print .= "<a class={$row['color']} style='font-size:x-large'>{$row['title']}</a>";
+			// detail 表示
 			if(!empty($text)) { $e_print .= "<div class='txtbox' align='left'>{$text}</div>"; }
 			else { $e_print .= '<br>'; }
+			// 削除/編集ボタン表示
 			$e_print .= <<<EOM
 <form method="post" action="event.php" class="inline">
 	<input type="hidden" name="date" value={$mydate}>

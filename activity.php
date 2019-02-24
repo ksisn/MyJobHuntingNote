@@ -12,6 +12,7 @@
 	$username = $_SESSION['username'];
 	$usermail = $_SESSION['mail'];
 	if (empty($usermail)) {
+		// サインインしていない場合
 		exit("<center>Please sign in → <a href='login.php'>SIGN IN page</a></center>");
 	}
 	?>
@@ -36,22 +37,7 @@
 	$password = 'パスワード';
 	$pdo = new PDO($dsn, $user, $password);
 
-	/* テーブル削除
-	$stmt = $pdo->prepare('show tables from データベース名 like :tblname');
-	$stmt -> execute(array(':tblname' => activity));
-	if ($stmt->rowCount() > 0) {
-		$query = "drop table if exists ".activity;
-		$pdo -> exec($query);
-	}
-	$stmt = $pdo->prepare('show tables from データベース名 like :tblname');
-	$stmt -> execute(array(':tblname' => category));
-	if ($stmt->rowCount() > 0) {
-		$query = "drop table if exists ".category;
-		$pdo -> exec($query);
-	}
-	/**/
-
-	// DB 作成
+	// make TABLE（activity: ユーザ別活動記録情報）
 	$sql = "CREATE TABLE if not exists activity"
 					. "("
 					. "usermail TEXT,"
@@ -62,6 +48,7 @@
 					. "mydate TEXT"
 					. ");";
 	$stmt = $pdo -> query($sql);
+	// make TABLE（category: Activityのカテゴリー情報）
 	$sql = "CREATE TABLE if not exists category"
 					. "("
 					. "usermail TEXT,"
@@ -83,7 +70,9 @@
 				$category = $_POST['category'];
 				$mydate = date("Y/m/d");
 
+				// $new: 新しいカテゴリーを作成するかを判別する変数（new=0: しない）
 				$new = 0;
+				/* error 処理 */
 				if (empty($title)) { $error = "error!<br>Please enter any title.<br>"; }
 				else if (empty($detail)) { $error = "error!<br>Please enter any detail.<br>"; }
 				else if ($category == "new category") {
@@ -101,6 +90,7 @@
 					}
 				}
 
+				// activity にデータ追加
 				if (empty($error)) {
 					try {
 						$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -119,6 +109,7 @@
 						print("error<br>". $e->getMessage());
 					}
 
+					// 新カテゴリー追加する場合
 					if ($new == 1) {
 						try {
 							$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -142,7 +133,7 @@
 	}
 
 
-
+	/* 全活動記録, カテゴリーを取得 */
 	$sql = $pdo -> prepare("SELECT * FROM activity WHERE usermail=:usermail ORDER BY mydate");
 	$params = array(':usermail'=>$usermail);
 	$sql -> execute($params);
@@ -162,7 +153,7 @@
 				$cg = $_GET['cg'];
 				$month = $_GET['month'];
 				$num = $_GET['num'];
-				/* 全て */
+				/* 全ての投稿 */
 				if (empty($id) && empty($cg) && empty($month) && empty($num) && !empty($results)) {
 					echo '<h2 class="head">All Activity</h2>';
 					$print = "";

@@ -12,13 +12,14 @@
 	$username = $_SESSION['username'];
 	$usermail = $_SESSION['mail'];
 	if (empty($usermail)) {
+		// サインインしていない場合
 		exit("<center>Please sign in → <a href='login.php'>SIGN IN page</a></center>");
 	}
 	?>
 	<div align="center"><?php echo $username."'s page"; ?></div>
 	<hr>
 	<?php
-	/* DB接続 */
+	// DB接続
 	$dsn = 'mysql:dbname=データベース名;host=localhost';
 	$user = 'ユーザ名';
 	$password = 'パスワード';
@@ -55,9 +56,8 @@
 				$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				$pdo->beginTransaction();
 
-				// DB にデータを入れるSQL文
+				// conotes のデータ更新
 				$sql = $pdo -> prepare("UPDATE conotes SET usermail=:usermail, name=:name, hp=:hp, tel=:tel, recruiter=:recruiter, address=:address, representative=:representative, established=:established, n_employee=:n_employee, capital=:capital, profit=:profit, business_contents=:business_contents, philosophy=:philosophy, position=:position, strength=:strength, vision=:vision, ideal_candidate=:ideal_candidate, reason=:reason, mystrength=:mystrength, memo=:memo WHERE id=:editid");
-				// パラメータ指定
 				$params = array(':usermail'=>$usermail,
 												':name'=>$name, ':hp'=>$hp, ':tel'=>$tel,
 												':recruiter'=>$recruiter, ':address'=>$address,
@@ -70,7 +70,6 @@
 												':ideal_candidate'=>$ideal_candidate,':reason'=>$reason,
 												':mystrength'=>$mystrength, ':memo'=>$memo,
 												':editid'=>$editid);
-				// SQL 実行
 				$sql -> execute($params);
 
 				$pdo->commit();
@@ -81,7 +80,7 @@
 		}
 	}
 
-	/* 現在の予定情報取得（変更後も適用） */
+	/* 現在の情報取得（変更後も適用） */
 	$editid = $_POST['editid'];
 
 	$sql = $pdo -> prepare("SELECT * FROM conotes WHERE id = :editid");

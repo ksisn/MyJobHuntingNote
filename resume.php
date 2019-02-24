@@ -12,6 +12,7 @@
 	$username = $_SESSION['username'];
 	$usermail = $_SESSION['mail'];
 	if (empty($usermail)) {
+		// サインインしていない場合
 		exit("<center>Please sign in → <a href='login.php'>SIGN IN page</a></center>");
 	}
 	?>
@@ -36,22 +37,7 @@
 	$password = 'パスワード';
 	$pdo = new PDO($dsn, $user, $password);
 
-	/* テーブル削除
-	$stmt = $pdo->prepare('show tables from データベース名 like :tblname');
-	$stmt -> execute(array(':tblname' => resume_main));
-	if ($stmt->rowCount() > 0) {
-		$query = "drop table if exists ".resume_main;
-		$pdo -> exec($query);
-	}
-	$stmt = $pdo->prepare('show tables from データベース名 like :tblname');
-	$stmt -> execute(array(':tblname' => resume_education));
-	if ($stmt->rowCount() > 0) {
-		$query = "drop table if exists ".resume_education;
-		$pdo -> exec($query);
-	}
-	/**/
-
-	// DB 作成
+	// make TABLE（resume_main: ユーザ別履歴書メモ情報-1）
 	$sql = "CREATE TABLE if not exists resume_main"
 					. "("
 					. "usermail TEXT,"
@@ -77,14 +63,15 @@
 					. "other TEXT"							// その他メモ
 					. ");";
 	$stmt = $pdo -> query($sql);
+	// make TABLE（resume_main: ユーザ別履歴書メモ情報-2）
 	$sql = "CREATE TABLE if not exists resume_education"
 					. "("
 					. "usermail TEXT,"
 					. "id INT,"									// 日付順に取り出すためのID
 					. "era TEXT,"								// 年号
-					. "year char(5),"								// 年
-					. "month char(5),"							// 月
-					. "mytext TEXT"								// 学歴・職歴
+					. "year char(5),"						// 年
+					. "month char(5),"					// 月
+					. "mytext TEXT"							// 学歴・職歴
 					. ");";
 	$stmt = $pdo -> query($sql);
 
@@ -193,6 +180,7 @@
 							$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 							$pdo->beginTransaction();
 
+							// resume_education にデータを入れる
 							$sql = $pdo -> prepare("INSERT INTO resume_education (usermail,id,era,year,month,mytext) VALUES  (:usermail,:id,:era,:year,:month,:mytext)");
 							$sql -> execute($params);
 
@@ -206,9 +194,8 @@
 							$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 							$pdo->beginTransaction();
 
-							// DB にデータを入れるSQL文
+							// resume_education のデータ更新
 							$sql = $pdo -> prepare("UPDATE resume_education SET era=:era, year=:year, month=:month, mytext=:mytext WHERE usermail=:usermail and id=:id");
-							// SQL 実行
 							$sql -> execute($params);
 
 							$pdo->commit();
@@ -233,6 +220,7 @@
 				break;
 	}
 
+	/* 履歴書メモの情報を取得 */
 	$sql = $pdo -> prepare("SELECT * FROM resume_main WHERE usermail=:usermail");
 	$params = array(':usermail'=>$usermail);
 	$sql -> execute($params);

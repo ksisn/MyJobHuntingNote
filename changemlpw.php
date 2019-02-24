@@ -65,6 +65,7 @@
 		}
 		$_SESSION = array();
 
+		// メアド変更完了→ログインページへ
 		$html = "<center>";
 		$html .= "<div><h3>登録メールアドレス変更処理が完了しました。</h3></div>";
 		$html .= "<div>Please re-sign in → <a href='login.php'>SIGN IN page</a><div>";
@@ -113,6 +114,7 @@
 			}
 			$_SESSION = array();
 
+			// パスワード変更完了→ログインページへ
 			$html = "<center>";
 			$html .= "<div><h3>パスワード変更処理が完了しました。</h3></div>";
 			$html .= "<div>Please re-sign in → <a href='login.php'>SIGN IN page</a><div>";

@@ -12,6 +12,7 @@
 	$username = $_SESSION['username'];
 	$usermail = $_SESSION['mail'];
 	if (empty($usermail)) {
+		// サインインしていない場合
 		exit("<center>Please sign in → <a href='login.php'>SIGN IN page</a></center>");
 	}
 	?>
@@ -41,9 +42,9 @@
 		// 削除対象番号 確保
 		$delid = $_POST['delid'];
 
-		// エラー処理分岐のための変数 確保
+		// $check: エラー処理分岐のための変数
 		$check = 0;
-		// DBの全データ確保
+		// events の全データ確保
 		$sql = 'SELECT * FROM events ORDER BY id';
 		$results = $pdo -> query($sql);
 		/* 処理 */
@@ -78,16 +79,18 @@
 	$year = date('Y');
 	$month = date('m');
 	switch($_POST['action']){
+		// 前月へ
 		case 'pre':
 			$year = $_POST['p_year'];
 			$month = $_POST['p_month'];
 			print(calendar($usermail, $year, $month));
 			break;
+		// 次月へ
 		case 'next':
 			$year = $_POST['n_year'];
 			$month = $_POST['n_month'];
 			print(calendar($usermail, $year, $month));
-			break;
+			break;	
 		default:
 			print(calendar($usermail, $year, $month));
 			break;
@@ -96,7 +99,7 @@
 	<br>
 	<hr>
 	<center>
-	<h1 class="circle"><?php echo $month; ?>月の予定<br><a style="font-size:medium">（本日以降）</a></h1><br>
+	<h1 class="circle"><?php echo $month; ?>月の予定</h1><br>
 	<?php
 	$mydate = $year.'/'.$month;
 	$today = $year.'/'.$month.'/'.date('d');
@@ -105,13 +108,15 @@
 	$sql -> execute($params);
 	$results = $sql->fetchAll();
 
+	/* 参照月の予定表示処理 */
 	if (empty($results)) {
 		$e_print .= "予定なし<br>";
 	} else {
 		$check = 0;
 		foreach ($results as $row) {
-			if ($row['mydate'] < $today) { continue; }
+			// 入力された detail の改行反映
 			$text = str_replace("\r\n", "<br />", $row['detail']);
+			/* 予定の表示/非表示切り替え用の「日付ボタン」表示（例. -12/04-） */
 			if ($date != substr($row['mydate'], '5')) {
 				if ($check == 1) { $e_print .= "</div></div>"; }
 				$check = 1;
@@ -123,9 +128,12 @@
 	<div class="hidden_show">
 EOM;
 			}
+			// title表示
 			$e_print .= "<a class={$row['color']} style='font-size:x-large'>{$row['title']}</a>";
+			// detail表示
 			if(!empty($text)) { $e_print .= "<div class='txtbox' align='left'>{$text}</div>"; }
 			else { $e_print .= '<br>'; }
+			// 削除/編集ボタン表示
 			$e_print .= <<<EOM
 <form method="post" action="schedule.php" class="inline">
 	<input type="hidden" name="date" value={$mydate}>
@@ -153,12 +161,13 @@ EOM;
 
 
 <?php
+	// カレンダー表示関数
 	function calendar($usermail, $year, $month) {
 		// 前月
 		$p_year = $year;
 		$p_month = $month - 1;
 		if ($p_month < 10) { $p_month = '0'.$p_month; }
-		if ($month == 1) {	// 前月
+		if ($month == 1) {
 			$p_year = $year - 1;
 			$p_month = 12;
 		}
@@ -205,10 +214,13 @@ EOM;
 		</tr>\n
 EOM;
 
-		// 月末まで繰り返す
+		// 1日〜月末まで繰り返す
 		for ($i = 1; $i <= $l_day; $i++) {
+			// $classes: 日の特性（例. 土/日, 今日etc）
 			$classes = array();
+			// $class: クラス定義用変数
 			$class   = '';
+
 			// 曜日の取得
 			$week = date('w', mktime(0, 0, 0, $month, $i, $year));
 
@@ -242,7 +254,8 @@ EOM;
 			$user = 'ユーザ名';
 			$password = 'パスワード';
 			$pdo = new PDO($dsn, $user, $password);
-			// この日予定タイトル取得
+
+			/* この日予定タイトル取得 */
 			if ($i < 10) { $i0 = '0'.$i; }
 			else { $i0 = $i; }
 			$sql = "SELECT * FROM events WHERE usermail='$usermail' and mydate='$year/$month/$i0'";
@@ -250,11 +263,13 @@ EOM;
 			$check = 0;
 			if (!empty($results)) { $check = 1; }
 
+			// 日付ボタン表示
 			$html .= "\t\t\t".'<td'.$class.' valign="middle">'."\n";
 			$html .= "\t\t\t\t".'<form method="post" action="event.php">'."\n";
 			$html .= "\t\t\t\t\t".'<input type="hidden" name="date" value="'."$year/$month/$i0".'">'."\n";
 			$html .= "\t\t\t\t\t".'<button type="submit" formaction="event.php" '.$class.' id="daylink">'.$i.'</button>'."\n";
 			$html .= "\t\t\t\t".'</form>'."\n";
+			// 予定ラベル表示
 			if ($check == 1) {
 				$html .= "\t\t\t\t".'<span>'."\n";
 				foreach ($results as $row) {
@@ -282,7 +297,7 @@ EOM;
 
 		return $html;
 	}
-
+	// 日付が入らないところを埋めるとき用の、空欄を連続配置する関数
 	function repeatEmptyTd($n = 0) {
 		return str_repeat("\t\t<td class=".'normal'."> </td>\n", $n);
 	}

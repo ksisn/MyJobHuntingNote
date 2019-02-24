@@ -12,6 +12,7 @@
 	$username = $_SESSION['username'];
 	$usermail = $_SESSION['mail'];
 	if (empty($usermail)) {
+		// サインインしていない場合
 		exit("<center>Please sign in → <a href='login.php'>SIGN IN page</a></center>");
 	}
 	?>
@@ -36,16 +37,7 @@
 	$password = 'パスワード';
 	$pdo = new PDO($dsn, $user, $password);
 
-	/* テーブル削除
-	$stmt = $pdo->prepare('show tables from データベース名 like :tblname');
-	$stmt -> execute(array(':tblname' => conotes));
-	if ($stmt->rowCount() > 0) {
-		$query = "drop table if exists ".conotes;
-		$pdo -> exec($query);
-	}
-	/**/
-
-	// DB 作成
+	// make TABLE（conotes: ユーザ別企業研究情報）
 	$sql = "CREATE TABLE if not exists conotes"
 					. "("
 					. "usermail TEXT,"
@@ -106,6 +98,7 @@
 				$mystrength = $_POST['mystrength'];
 				$memo = $_POST['memo'];
 
+				/* 追加処理 */
 				if (empty($name)) {
 					$error = "<br>error!<br>Please enter any company name.<br>";
 					$checked = 1;
@@ -114,9 +107,8 @@
 						$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 						$pdo->beginTransaction();
 
-						// DB にデータを入れるSQL文
+						// conotes にデータを入れる
 						$sql = $pdo -> prepare("INSERT INTO conotes  (usermail,id,name,hp,tel,recruiter,address,representative,established,n_employee,capital,profit,business_contents,philosophy,position,strength,vision,ideal_candidate,reason,mystrength,memo) VALUES (:usermail,:id,:name,:hp,:tel,:recruiter,:address,:representative,:established,:n_employee,:capital,:profit,:business_contents,:philosophy,:position,:strength,:vision,:ideal_candidate,:reason,:mystrength,:memo)");
-						// パラメータ指定
 						$params = array(':usermail'=>$usermail, ':id'=>$id,
 														':name'=>$name, ':hp'=>$hp, ':tel'=>$tel,
 														':recruiter'=>$recruiter, ':address'=>$address,
@@ -128,7 +120,6 @@
 														':strength'=>$strength, ':vision'=>$vision,
 														':ideal_candidate'=>$ideal_candidate,':reason'=>$reason,
 														':mystrength'=>$mystrength, ':memo'=>$memo);
-						// SQL 実行
 						$sql -> execute($params);
 
 						$pdo->commit();
@@ -152,7 +143,7 @@
 
 				// ずらし用変数 確保
 				$check = 0;
-				// DBの全データ確保
+				// conotes の全データ確保
 				$sql = 'SELECT * FROM conotes ORDER BY id';
 				$results = $pdo -> query($sql);
 				/* 処理 */
@@ -190,10 +181,12 @@
 	$sql -> execute($params);
 	$results = $sql->fetchAll();
 
+	// 全企業研究表示
 	if (empty($results)) {
 		$e_print .= "企業登録なし<br>";
 	} else {
 		foreach ($results as $row) {
+			// 改行反映
 			$business_contents2 = str_replace("\r\n", "<br />", $row['business_contents']);
 			$philosophy2 = str_replace("\r\n", "<br />", $row['philosophy']);
 			$position2 = str_replace("\r\n", "<br />", $row['position']);
@@ -203,6 +196,7 @@
 			$reason2 = str_replace("\r\n", "<br />", $row['reason']);
 			$mystrength2 = str_replace("\r\n", "<br />", $row['mystrength']);
 			$memo2 = str_replace("\r\n", "<br />", $row['memo']);
+			// 表示
 			$e_print .= <<<EOM
 <div class="hidden_box">
 	<label for={$row['id']}><h3 class="husen">{$row['name']}</h3></label>

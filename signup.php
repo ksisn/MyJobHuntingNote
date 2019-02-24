@@ -17,16 +17,7 @@
 	$password = 'パスワード';
 	$pdo = new PDO($dsn, $user, $password);
 
-	/* テーブル削除
-	$stmt = $pdo->prepare('show tables from データベース名 like :tblname');
-	$stmt -> execute(array(':tblname' => users));
-	if ($stmt->rowCount() > 0) {
-		$query = "drop table if exists ".users;
-		$pdo -> exec($query);
-	}
-	/**/
-
-	// DB 作成
+	// make TABLE（users: 登録ユーザ情報）
 	$sql = "CREATE TABLE if not exists users"
 					. "("
 					. "name TEXT,"
@@ -56,14 +47,13 @@
 						$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 						$pdo->beginTransaction();
 
-						// DB にデータを入れるSQL文
+						// users にデータを入れる
 						$sql = $pdo -> prepare("INSERT INTO users (name,mail,pass) VALUES (:name, :mail, :pass)");
-						// パラメータ指定
 						$params = array(':name'=>$new_name, ':mail'=>$new_mail, ':pass'=>$new_pass1);
-						// SQL 実行
 						$sql -> execute($params);
 
 						$pdo->commit();
+						// セッション変数をセット
 						session_regenerate_id(true);
 						$_SESSION['username'] = $new_name;
 						$_SESSION['mail'] = $new_mail;
@@ -83,7 +73,7 @@
 							$pdo->rollback();
 							print("error<br>". $e->getMessage());
 						}
-						// リンク
+						/* サインアップ */
 						header("Location: config.php");
 						exit();
 					} catch ( Exception $e ) {
@@ -94,7 +84,7 @@
 				break;
 	}
 
-	/* URLが有効か（メールで送ったURLか） チェック*/
+	/* URLが有効か（メールで送ったURLか） チェック */
 	$tmp_mail = $_GET['ml'];
 	$tmp_pass = $_GET['pw'];
 
@@ -104,6 +94,7 @@
 	$result = $sql->fetch();
 
 	if (empty($result)) {
+		// 不適切なURL
 		exit("<center>Invalid URL error...</center>");
 	}
 	?>

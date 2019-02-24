@@ -12,6 +12,7 @@
 	$username = $_SESSION['username'];
 	$usermail = $_SESSION['mail'];
 	if (empty($usermail)) {
+		// サインインしていない場合
 		exit("<center>Please sign in → <a href='login.php'>SIGN IN page</a></center>");
 	}
 	?>
@@ -40,6 +41,7 @@
 	if(empty($checked)) { $checked = 0; }
 	$error = array();
 
+	// change name,mail,pass / logout / user delete
 	switch ($_POST['action']) {
 		case 'change name':
 				$checked = 1;
@@ -183,6 +185,7 @@ EOM;
 					$sql -> execute($params);
 
 					$pdo->commit();
+					// ログインページへ
 					header("Location: login.php");
 					exit;
 				} catch ( Exception $e ) {
