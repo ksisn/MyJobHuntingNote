@@ -8,10 +8,10 @@ http://tt-707.99sv-coco.com/mission_6-login.php
 ## 概要
 「就活生向けの活動管理サイト」  
 
-#### 1. 活動記録まとめ（Activity）  
-#### 2. 企業研究まとめ（Company Note）
-#### 3. 履歴書用メモ（Resume）  
-#### 4. スケジュール管理用カレンダー（Schedule）  
+1. 活動記録まとめ（Activity）  
+2. 企業研究まとめ（Company Note）
+3. 履歴書用メモ（Resume）  
+4. スケジュール管理用カレンダー（Schedule）  
 
 の４つの機能が利用可能。  
 （以下、各機能ページの概要）  
